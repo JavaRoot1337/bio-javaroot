@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --------------------------------------------------------
   if (CONFIG.cardTiltIntensity > 0) {
     const tiltTransform = (x, y) =>
-      `translate(-50%, -50%) perspective(${CONFIG.cardTiltPerspective}) rotateX(${x}deg) rotateY(${y}deg)`;
+      `perspective(${CONFIG.cardTiltPerspective}) rotateX(${x}deg) rotateY(${y}deg)`;
     let cardRect = null;
     let tiltFrame = 0;
     let pendingPoint = null;
