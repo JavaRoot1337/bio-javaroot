@@ -1,34 +1,22 @@
-// ============================================================
-// script.js — page logic
-// You don't need to edit this file. All customization lives in config.js
-// ============================================================
 
 
-// ============================================================
-// INIT — runs once the HTML is ready
-// ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
   let hasEntered = false;
 
-  // -- Entry screen symbol --
   document.getElementById("entry-symbol").textContent = CONFIG.entrySymbol;
 
-  // -- Badges --
   document.documentElement.style.setProperty("--badge-size",             CONFIG.badgeSize);
   document.documentElement.style.setProperty("--badge-container-bg",     CONFIG.badgeContainerBackground);
   document.documentElement.style.setProperty("--badge-container-border", CONFIG.badgeContainerBorder);
 
 
-  // -- Avatar --
   document.documentElement.style.setProperty("--avatar-size", CONFIG.avatarSize);
 
   const decorationEl = document.getElementById("avatar-decoration");
   decorationEl.style.display = "none";
 
-  // -- Background video --
 
-  // -- Card appearance --
   document.documentElement.style.setProperty("--card-max-width",        CONFIG.cardMaxWidth);
   document.documentElement.style.setProperty("--card-border-radius",    CONFIG.cardBorderRadius);
   document.documentElement.style.setProperty("--card-background",       CONFIG.cardBackground);
@@ -36,41 +24,31 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.setProperty("--card-tilt-perspective", CONFIG.cardTiltPerspective);
   document.documentElement.style.setProperty("--username-glow",         CONFIG.usernameGlow);
 
-  // -- Discord box --
   document.documentElement.style.setProperty("--discord-box-background", CONFIG.discordBoxBackground);
   document.documentElement.style.setProperty("--discord-box-radius",     CONFIG.discordBoxRadius);
   document.documentElement.style.setProperty("--discord-box-border",     CONFIG.discordBoxBorder);
   document.documentElement.style.setProperty("--discord-avatar-size",    CONFIG.discordAvatarSize);
   document.documentElement.style.setProperty("--discord-avatar-border",  CONFIG.discordAvatarBorder);
 
-  // -- Social icons --
   document.documentElement.style.setProperty("--icon-size",          CONFIG.iconSize);
   document.documentElement.style.setProperty("--icon-border-radius", CONFIG.iconBorderRadius);
   document.documentElement.style.setProperty("--icon-glow-color",    CONFIG.iconGlowColor);
 
-  // -- Discord presence --
   document.getElementById("discord-username").textContent = CONFIG.discordUsername;
   document.getElementById("discord-activity").textContent = CONFIG.discordStatus;
 
-  // -- Custom cursor --
   if (CONFIG.customCursor) {
     const style = document.createElement("style");
     style.textContent = `* { cursor: url("${CONFIG.customCursor}") ${CONFIG.customCursorHotspot}, auto !important; }`;
     document.head.appendChild(style);
   }
 
-  // -- Tab title typewriter --
   initTabTitle(CONFIG.tabTitle);
 
-  // -- Music player --
-  initMusicPlayer();
+  const startMusic = initMusicPlayer();
 
-  // -- Cursor sparkle trail (active from page load) --
   initCursorTrail();
 
-  // --------------------------------------------------------
-  // Entry screen click — starts everything
-  // --------------------------------------------------------
   const profileCard = document.getElementById("profile-card");
   const bgVideo = document.getElementById("bg-video");
 
@@ -81,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     prepareMedia();
     initNameEffect();
+    startMusic();
     const playRequest = bgVideo.play();
     if (playRequest) playRequest.catch(() => {});
 
@@ -92,9 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, CONFIG.cardRevealDelay);
   });
 
-  // --------------------------------------------------------
-  // 3D card tilt on mouse move
-  // --------------------------------------------------------
   if (CONFIG.cardTiltIntensity > 0) {
     const tiltTransform = (x, y) =>
       `perspective(${CONFIG.cardTiltPerspective}) rotateX(${x}deg) rotateY(${y}deg)`;
@@ -236,8 +212,8 @@ function initMusicPlayer() {
   };
 
   const setPlayState = (playing) => {
-    toggle.textContent = playing ? "Ⅱ" : "▶";
-    toggle.setAttribute("aria-label", playing ? "Поставить музыку на паузу" : "Включить музыку");
+    toggle.textContent = playing ? "в…Ў" : "в–¶";
+    toggle.setAttribute("aria-label", playing ? "РџРѕСЃС‚Р°РІРёС‚СЊ РјСѓР·С‹РєСѓ РЅР° РїР°СѓР·Сѓ" : "Р’РєР»СЋС‡РёС‚СЊ РјСѓР·С‹РєСѓ");
     toggle.classList.toggle("is-playing", playing);
   };
 
@@ -246,8 +222,8 @@ function initMusicPlayer() {
 
     current = (index + tracks.length) % tracks.length;
     const track = tracks[current];
-    title.textContent = track.title || "Без названия";
-    artist.textContent = track.artist || "Неизвестный исполнитель";
+    title.textContent = track.title || "Р‘РµР· РЅР°Р·РІР°РЅРёСЏ";
+    artist.textContent = track.artist || "РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёСЃРїРѕР»РЅРёС‚РµР»СЊ";
     audio.src = track.file;
     audio.load();
     progress.value = "0";
@@ -263,7 +239,7 @@ function initMusicPlayer() {
     previous.disabled = true;
     next.disabled = true;
     progress.disabled = true;
-    return;
+    return () => {};
   }
 
   setTrack(0, false);
@@ -295,15 +271,13 @@ function initMusicPlayer() {
   audio.addEventListener("play", () => setPlayState(true));
   audio.addEventListener("pause", () => setPlayState(false));
   audio.addEventListener("ended", () => setTrack(current + 1, true));
+
+  return () => {
+    if (audio.paused) audio.play().catch(() => {});
+  };
 }
 
 
-// ============================================================
-// NAME INTERFERENCE EFFECT
-// Applies an SVG displacement filter to the name span.
-// The filter seed changes every 40ms, making the letters
-// "vibrate" like a bad TV signal — all done by the GPU.
-// ============================================================
 function initNameEffect() {
   const nameEl  = document.getElementById("name-text");
   const tooltip = document.getElementById("name-tooltip");
@@ -321,7 +295,6 @@ function initNameEffect() {
 
   setInterval(() => {
     turb.setAttribute("seed", Math.floor(Math.random() * 9999));
-    // 80% of the time: heavy distortion / 20%: almost clean
     const scale = Math.random() < 0.8
       ? 4 + Math.random() * 8
       : 0.5 + Math.random() * 2;
@@ -330,10 +303,6 @@ function initNameEffect() {
 }
 
 
-// ============================================================
-// TAB TITLE TYPEWRITER
-// Types the title in the browser tab, pauses, deletes, repeats.
-// ============================================================
 function initTabTitle(text) {
   let index     = 0;
   let isTyping  = true;
@@ -359,11 +328,6 @@ function initTabTitle(text) {
 }
 
 
-// ============================================================
-// STATUS TYPEWRITER
-// Types the status text, pauses, deletes, and repeats.
-// The blinking cursor "|" is added via CSS (::after on #profile-status).
-// ============================================================
 function initTypewriter(el, text, speed = 80) {
   let i          = 0;
   let isDeleting = false;
@@ -393,13 +357,6 @@ function initTypewriter(el, text, speed = 80) {
 }
 
 
-// ============================================================
-// BACKGROUND PARTICLES
-// Dots that fall from top to bottom with a gentle horizontal
-// sway. They also shift opposite to the mouse movement,
-// creating a parallax depth effect.
-// Starts only after the entry screen is clicked.
-// ============================================================
 function initParticles() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -478,12 +435,6 @@ function initParticles() {
 }
 
 
-// ============================================================
-// CURSOR SPARKLE TRAIL
-// 4-pointed star sparkles that appear at the cursor position
-// and fade out while drifting. Spawning is done inside the
-// requestAnimationFrame loop (not in mousemove) to avoid lag.
-// ============================================================
 function initCursorTrail() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(pointer: fine)").matches) return;
 
@@ -529,7 +480,6 @@ function initCursorTrail() {
     frameId = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Spawn new particles only when the mouse has moved
     if (mouseX !== lastX || mouseY !== lastY) {
       for (let i = 0; i < shootingStarMaxParticles; i++) {
         particles.push({
