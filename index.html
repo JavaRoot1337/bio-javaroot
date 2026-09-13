@@ -39,11 +39,9 @@
       <!-- Background particles canvas -->
       <canvas id="bg-canvas"></canvas>
 
-      <!-- Volume toggle button -->
-      <button id="volume-btn" type="button" aria-label="Toggle sound">🔊</button>
-
-      <!-- Profile card -->
-      <div id="profile-card">
+      <div id="profile-stack">
+        <!-- Profile card -->
+        <div id="profile-card">
 
         <!-- Section 1: avatar + name + status -->
         <div id="profile-main">
@@ -80,6 +78,31 @@
         <!-- Section 3: social links (generated from config.js) -->
         <div id="social-links"></div>
 
+        </div>
+
+        <section id="music-player" aria-label="Музыкальный плеер">
+          <audio id="music-audio" preload="metadata"></audio>
+          <div class="music-player-main">
+            <div class="music-player-cover" aria-hidden="true">♪</div>
+            <div class="music-player-info">
+              <span class="music-player-label">Музыка</span>
+              <span id="music-title">Музыка не добавлена</span>
+              <span id="music-artist">Добавьте .mp3 в assets/music</span>
+            </div>
+            <div class="music-player-controls">
+              <button id="music-previous" type="button" aria-label="Предыдущий трек">‹</button>
+              <button id="music-toggle" type="button" aria-label="Включить музыку">▶</button>
+              <button id="music-next" type="button" aria-label="Следующий трек">›</button>
+            </div>
+          </div>
+          <div class="music-player-timeline">
+            <input id="music-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Позиция воспроизведения" />
+            <div class="music-player-times">
+              <span id="music-current-time">0:00</span>
+              <span id="music-duration">0:00</span>
+            </div>
+          </div>
+        </section>
       </div>
 
     </div>

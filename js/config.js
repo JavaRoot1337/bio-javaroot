@@ -22,6 +22,13 @@ const CONFIG = {
   customCursor:        "assets/cursor.png",
   customCursorHotspot: "0 0",    // "0 0" = tip of the cursor (top-left corner)
 
+  // MUSIC PLAYER
+  // Add .mp3 files to assets/music/ and list them here
+  musicTracks: [
+    // { title: "Название трека", artist: "Исполнитель", file: "assets/music/track.mp3" },
+  ],
+  musicVolume: 0.65,
+
   // ----------------------------------------------------------
   // AVATAR
   // ----------------------------------------------------------
@@ -50,7 +57,7 @@ const CONFIG = {
   discordStatus:   "Coding...",
   discordAvatar:   "assets/discord-avatar.jpg",
   discordAvatarSize:   "74px",
-  discordAvatarBorder: "2px solid rgba(200, 27, 27, 0.15)",
+  discordAvatarBorder: "2px solid rgba(255, 255, 255, 0.22)",
   // status: "online" | "idle" | "dnd" | "offline"
   discordPresenceStatus: "online",
 
@@ -72,7 +79,7 @@ const CONFIG = {
   // ----------------------------------------------------------
   cardMaxWidth:        "44rem",
   cardBorderRadius:    "85px",
-  cardBackground:      "rgba(200, 27, 27, 0.03)",
+  cardBackground:      "rgba(0, 0, 0, 0.58)",
   cardBorder:          "none",
   cardRevealDelay:     300,        // ms between entry click and card appearance
   cardTiltIntensity:   15,         // tilt degrees on mouse move (0 = disabled)

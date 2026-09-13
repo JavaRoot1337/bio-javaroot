@@ -62,6 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // -- Tab title typewriter --
   initTabTitle(CONFIG.tabTitle);
 
+  // -- Music player --
+  initMusicPlayer();
+
   // -- Cursor sparkle trail (active from page load) --
   initCursorTrail();
 
@@ -78,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     prepareMedia();
     initNameEffect();
-    bgVideo.muted = false;
     const playRequest = bgVideo.play();
     if (playRequest) playRequest.catch(() => {});
 
@@ -133,15 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
     window.addEventListener("resize", () => { cardRect = null; }, { passive: true });
   }
-
-  // --------------------------------------------------------
-  // Volume button
-  // --------------------------------------------------------
-  const volumeBtn = document.getElementById("volume-btn");
-  volumeBtn.addEventListener("click", () => {
-    bgVideo.muted = !bgVideo.muted;
-    volumeBtn.textContent = bgVideo.muted ? "🔇" : "🔊";
-  });
 
 });
 
@@ -213,6 +206,93 @@ function prepareMedia() {
   source.src = CONFIG.backgroundVideo;
   bgVideo.preload = "auto";
   bgVideo.load();
+}
+
+
+function initMusicPlayer() {
+  const audio = document.getElementById("music-audio");
+  const title = document.getElementById("music-title");
+  const artist = document.getElementById("music-artist");
+  const toggle = document.getElementById("music-toggle");
+  const previous = document.getElementById("music-previous");
+  const next = document.getElementById("music-next");
+  const progress = document.getElementById("music-progress");
+  const currentTime = document.getElementById("music-current-time");
+  const duration = document.getElementById("music-duration");
+  const tracks = Array.isArray(CONFIG.musicTracks)
+    ? CONFIG.musicTracks.filter((track) => track && track.file)
+    : [];
+  let current = 0;
+
+  audio.volume = Math.min(Math.max(Number(CONFIG.musicVolume) || 0, 0), 1);
+
+  const formatTime = (seconds) => {
+    if (!Number.isFinite(seconds)) return "0:00";
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
+    return `${minutes}:${remainingSeconds}`;
+  };
+
+  const setPlayState = (playing) => {
+    toggle.textContent = playing ? "Ⅱ" : "▶";
+    toggle.setAttribute("aria-label", playing ? "Поставить музыку на паузу" : "Включить музыку");
+    toggle.classList.toggle("is-playing", playing);
+  };
+
+  const setTrack = (index, play) => {
+    if (!tracks.length) return;
+
+    current = (index + tracks.length) % tracks.length;
+    const track = tracks[current];
+    title.textContent = track.title || "Без названия";
+    artist.textContent = track.artist || "Неизвестный исполнитель";
+    audio.src = track.file;
+    audio.load();
+    progress.value = "0";
+    currentTime.textContent = "0:00";
+    duration.textContent = "0:00";
+    setPlayState(false);
+
+    if (play) audio.play().catch(() => {});
+  };
+
+  if (!tracks.length) {
+    toggle.disabled = true;
+    previous.disabled = true;
+    next.disabled = true;
+    progress.disabled = true;
+    return;
+  }
+
+  setTrack(0, false);
+
+  toggle.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+  });
+
+  previous.addEventListener("click", () => setTrack(current - 1, !audio.paused));
+  next.addEventListener("click", () => setTrack(current + 1, !audio.paused));
+
+  progress.addEventListener("input", () => {
+    if (!Number.isFinite(audio.duration)) return;
+    audio.currentTime = audio.duration * (Number(progress.value) / 100);
+  });
+
+  audio.addEventListener("loadedmetadata", () => {
+    duration.textContent = formatTime(audio.duration);
+  });
+  audio.addEventListener("timeupdate", () => {
+    if (!Number.isFinite(audio.duration)) return;
+    progress.value = String((audio.currentTime / audio.duration) * 100);
+    currentTime.textContent = formatTime(audio.currentTime);
+  });
+  audio.addEventListener("play", () => setPlayState(true));
+  audio.addEventListener("pause", () => setPlayState(false));
+  audio.addEventListener("ended", () => setTrack(current + 1, true));
 }
 
 
