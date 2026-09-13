@@ -82,7 +82,7 @@ const CONFIG = {
   cardBackground:      "rgba(0, 0, 0, 0.58)",
   cardBorder:          "none",
   cardRevealDelay:     300,        // ms between entry click and card appearance
-  cardTiltIntensity:   15,         // tilt degrees on mouse move (0 = disabled)
+  cardTiltIntensity:   0,          // tilt degrees on mouse move (0 = disabled)
   cardTiltPerspective: "1000px",   // 3D perspective (lower = more dramatic)
 
   // ----------------------------------------------------------
