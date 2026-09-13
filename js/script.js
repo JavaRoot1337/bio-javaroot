@@ -203,9 +203,11 @@ function prepareMedia() {
 
   const bgVideo = document.getElementById("bg-video");
   const source = document.getElementById("bg-video-source");
-  source.src = CONFIG.backgroundVideo;
-  bgVideo.preload = "auto";
-  bgVideo.load();
+  if (CONFIG.backgroundVideo) {
+    source.src = CONFIG.backgroundVideo;
+    bgVideo.preload = "auto";
+    bgVideo.load();
+  }
 }
 
 
