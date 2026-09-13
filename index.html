@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,15 +9,11 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-
-
     <div id="entry-screen">
       <div id="entry-symbol"></div>
     </div>
 
     <div id="main-content">
-
-
       <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="name-filter" x="-10%" y="-20%" width="120%" height="140%">
@@ -30,72 +26,65 @@
         </defs>
       </svg>
 
-
       <video id="bg-video" muted loop playsinline preload="none" aria-hidden="true">
         <source id="bg-video-source" type="video/mp4" />
       </video>
-
-
       <canvas id="bg-canvas"></canvas>
 
       <div id="profile-stack">
-
         <div id="profile-card">
-
-
-        <div id="profile-main">
-          <div id="avatar-wrapper">
-            <img id="avatar" alt="avatar" />
-            <img id="avatar-decoration" alt="" />
-          </div>
-          <div id="profile-info">
-            <div id="profile-name">
-              <div id="name-row">
-                <div class="name-wrapper">
-                  <span id="name-text"></span>
-                  <span class="name-tooltip" id="name-tooltip"></span>
-                </div>
-                <div id="badges"></div>
-              </div>
+          <div id="profile-main">
+            <div id="avatar-wrapper">
+              <img id="avatar" alt="avatar" />
+              <img id="avatar-decoration" alt="" />
             </div>
-            <p id="profile-status"></p>
+            <div id="profile-info">
+              <div id="profile-name">
+                <div id="name-row">
+                  <div class="name-wrapper">
+                    <span id="name-text"></span>
+                    <span class="name-tooltip" id="name-tooltip"></span>
+                  </div>
+                  <div id="badges"></div>
+                </div>
+              </div>
+              <p id="profile-status"></p>
+            </div>
           </div>
+
+          <div id="discord-presence">
+            <div id="discord-avatar-wrapper">
+              <img id="discord-avatar" alt="discord avatar" />
+              <img id="discord-status-icon" alt="" />
+            </div>
+            <div id="discord-info">
+              <span id="discord-username"></span>
+              <span id="discord-activity"></span>
+            </div>
+          </div>
+
+          <div id="social-links"></div>
         </div>
 
-
-        <div id="discord-presence">
-          <div id="discord-avatar-wrapper">
-            <img id="discord-avatar" alt="discord avatar" />
-            <img id="discord-status-icon" alt="" />
-          </div>
-          <div id="discord-info">
-            <span id="discord-username"></span>
-            <span id="discord-activity"></span>
-          </div>
-        </div>
-
-
-        <div id="social-links"></div>
-
-        </div>
-
-        <section id="music-player" aria-label="РњСѓР·С‹РєР°Р»СЊРЅС‹Р№ РїР»РµРµСЂ">
+        <section id="music-player" aria-label="Audio player">
           <audio id="music-audio" preload="metadata"></audio>
           <div class="music-player-main">
-            <img class="music-player-cover" src="assets/music/music_icon.png" alt="" />
             <div class="music-player-info">
-              <span class="music-player-label">РњСѓР·С‹РєР°</span>
-              <span id="music-title">РњСѓР·С‹РєР° РЅРµ РґРѕР±Р°РІР»РµРЅР°</span>
-              <span id="music-artist">Р”РѕР±Р°РІРёС‚СЊ РїРѕС‚РѕРј .mp3 РІ assets/music</span>
+              <div class="music-player-meta">
+                <span class="music-player-label" id="music-player-label"></span>
+                <span id="music-track-count">0 / 0</span>
+              </div>
+              <span id="music-title"></span>
+              <span id="music-artist"></span>
             </div>
             <div class="music-player-controls">
-              <button id="music-previous" type="button" aria-label="РџСЂРµРґС‹РґСѓС‰РёР№ С‚СЂРµРє">вЂ№</button>
-              <button id="music-toggle" type="button" aria-label="Р’РєР»СЋС‡РёС‚СЊ РјСѓР·С‹РєСѓ">в–¶</button>
-              <button id="music-next" type="button" aria-label="РЎР»РµРґСѓСЋС‰РёР№ С‚СЂРµРє">вЂє</button>
+              <button id="music-previous" type="button" aria-label="Previous track">&#8249;</button>
+              <button id="music-toggle" type="button" aria-label="Play">&#9654;</button>
+              <button id="music-next" type="button" aria-label="Next track">&#8250;</button>
             </div>
           </div>
           <div class="music-player-timeline">
-            <input id="music-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="РџРѕР·РёС†РёСЏ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёСЏ" />
+            <input id="music-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Playback position" />
             <div class="music-player-times">
               <span id="music-current-time">0:00</span>
               <span id="music-duration">0:00</span>
@@ -103,12 +92,9 @@
           </div>
         </section>
       </div>
-
     </div>
 
-
     <canvas id="cursor-canvas"></canvas>
-
 
     <script src="js/config.js"></script>
     <script src="js/script.js"></script>

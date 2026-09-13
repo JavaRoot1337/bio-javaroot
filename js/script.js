@@ -191,6 +191,8 @@ function initMusicPlayer() {
   const audio = document.getElementById("music-audio");
   const title = document.getElementById("music-title");
   const artist = document.getElementById("music-artist");
+  const label = document.getElementById("music-player-label");
+  const trackCount = document.getElementById("music-track-count");
   const toggle = document.getElementById("music-toggle");
   const previous = document.getElementById("music-previous");
   const next = document.getElementById("music-next");
@@ -201,8 +203,24 @@ function initMusicPlayer() {
     ? CONFIG.musicTracks.filter((track) => track && track.file)
     : [];
   let current = 0;
+  const copy = {
+    empty: "\u041d\u0435\u0442 \u0442\u0440\u0435\u043a\u043e\u0432",
+    player: "\u041f\u043b\u0435\u0435\u0440",
+    source: "assets/music",
+    play: "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u043c\u0443\u0437\u044b\u043a\u0443",
+    pause: "\u041f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043c\u0443\u0437\u044b\u043a\u0443 \u043d\u0430 \u043f\u0430\u0443\u0437\u0443",
+    previous: "\u041f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0438\u0439 \u0442\u0440\u0435\u043a",
+    next: "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u0442\u0440\u0435\u043a",
+    unknown: "\u0411\u0435\u0437 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u044f",
+    unknownArtist: "\u0418\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c \u043d\u0435 \u0443\u043a\u0430\u0437\u0430\u043d",
+  };
 
   audio.volume = Math.min(Math.max(Number(CONFIG.musicVolume) || 0, 0), 1);
+  label.textContent = copy.player;
+  title.textContent = copy.empty;
+  artist.textContent = copy.source;
+  previous.setAttribute("aria-label", copy.previous);
+  next.setAttribute("aria-label", copy.next);
 
   const formatTime = (seconds) => {
     if (!Number.isFinite(seconds)) return "0:00";
@@ -212,8 +230,8 @@ function initMusicPlayer() {
   };
 
   const setPlayState = (playing) => {
-    toggle.textContent = playing ? "в…Ў" : "в–¶";
-    toggle.setAttribute("aria-label", playing ? "РџРѕСЃС‚Р°РІРёС‚СЊ РјСѓР·С‹РєСѓ РЅР° РїР°СѓР·Сѓ" : "Р’РєР»СЋС‡РёС‚СЊ РјСѓР·С‹РєСѓ");
+    toggle.textContent = playing ? "\u23f8" : "\u25b6";
+    toggle.setAttribute("aria-label", playing ? copy.pause : copy.play);
     toggle.classList.toggle("is-playing", playing);
   };
 
@@ -222,8 +240,9 @@ function initMusicPlayer() {
 
     current = (index + tracks.length) % tracks.length;
     const track = tracks[current];
-    title.textContent = track.title || "Р‘РµР· РЅР°Р·РІР°РЅРёСЏ";
-    artist.textContent = track.artist || "РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёСЃРїРѕР»РЅРёС‚РµР»СЊ";
+    title.textContent = track.title || copy.unknown;
+    artist.textContent = track.artist || copy.unknownArtist;
+    trackCount.textContent = `${current + 1} / ${tracks.length}`;
     audio.src = track.file;
     audio.load();
     progress.value = "0";
@@ -239,6 +258,7 @@ function initMusicPlayer() {
     previous.disabled = true;
     next.disabled = true;
     progress.disabled = true;
+    toggle.setAttribute("aria-label", copy.play);
     return () => {};
   }
 

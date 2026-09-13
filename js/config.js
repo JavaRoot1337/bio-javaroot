@@ -14,6 +14,11 @@ const CONFIG = {
   customCursorHotspot: "0 0",
 
   musicTracks: [
+    {
+      title: "\u0427\u0435\u0440\u043d\u044b\u0439 \u0448\u0435\u043b\u043a",
+      artist: "",
+      file: "assets/music/\u0447\u0435\u0440\u043d\u044b\u0439 \u0448\u0435\u043b\u043a.mp3",
+    },
   ],
   musicVolume: 0.65,
 
