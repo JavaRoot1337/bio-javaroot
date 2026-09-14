@@ -132,7 +132,7 @@ function prepareMedia() {
   discordAvatar.decoding = "async";
 
   const statusIconMap = {
-    online:  "assets/icons/status/online.png",
+    online:  "assets/icons/status/online.webp",
     idle:    "assets/icons/status/inactive.png",
     dnd:     "assets/icons/status/busy.png",
     offline: "assets/icons/status/offline.png",
@@ -166,6 +166,7 @@ function prepareMedia() {
     a.target = "_blank";
     a.rel = "noopener noreferrer";
     a.title = link.name;
+    a.setAttribute("aria-label", link.name);
 
     const icon = document.createElement("img");
     icon.className = "social-icon";
@@ -219,8 +220,11 @@ function initMusicPlayer() {
       return;
     }
 
-    audio.pause();
-    audio.currentTime = 0;
+    if (audio.paused) {
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
   });
   audio.addEventListener("ended", () => setTrack(current + 1, true));
 

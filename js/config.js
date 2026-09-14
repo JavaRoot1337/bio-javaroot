@@ -8,7 +8,7 @@ const CONFIG = {
   tabTitle:      "@JavaRoot",
   entrySymbol:   "click on me",
 
-  avatar:              "assets/avatar.jpg",
+  avatar:              "assets/avatar.webp",
   backgroundVideo:     "",
   customCursor:        "assets/cursor.png",
   customCursorHotspot: "0 0",
@@ -17,7 +17,7 @@ const CONFIG = {
     {
       title: "\u0427\u0435\u0440\u043d\u044b\u0439 \u0448\u0435\u043b\u043a",
       artist: "",
-      file: "assets/music/\u0447\u0435\u0440\u043d\u044b\u0439 \u0448\u0435\u043b\u043a.mp3",
+      file: "assets/music/\u0447\u0435\u0440\u043d\u044b\u0439 \u0448\u0435\u043b\u043a-optimized.mp3",
     },
   ],
   musicVolume: 0.65,
@@ -26,10 +26,10 @@ const CONFIG = {
   avatarDecoration: "https://cdn.discordapp.com/avatar-decoration-presets/a_da532f804b47f1681006c2996eb07b2a.png",
 
   badges: [
-    { icon: "assets/badges/owner.png",    label: "Owner"    },
-    { icon: "assets/badges/verified.png", label: "Verified" },
-    { icon: "assets/badges/partner.png",  label: "Partner"  },
-    { icon: "assets/badges/hate.gif",     label: "hate"     },
+    { icon: "assets/badges/owner.webp",    label: "Owner"    },
+    { icon: "assets/badges/verified.webp", label: "Verified" },
+    { icon: "assets/badges/partner.webp",  label: "Partner"  },
+    { icon: "assets/badges/hate.webp",     label: "hate"     },
   ],
   badgeSize:                "22px",
   badgeContainerBackground: "rgba(172, 200, 255, 0.08)",
@@ -37,15 +37,16 @@ const CONFIG = {
 
   discordUsername: "JavaRoot",
   discordStatus:   "Coding...",
-  discordAvatar:   "assets/discord-avatar.jpg",
+  discordAvatar:   "assets/avatar.webp",
   discordAvatarSize:   "74px",
   discordAvatarBorder: "2px solid rgba(255, 255, 255, 0.22)",
   discordPresenceStatus: "online",
 
   socialLinks: [
-    { name: "Discord", url: "https://discord.com/users/javaroot", icon: "assets/icons/discord.png" },
-    { name: "Telegram", url: "https://t.me/javaroot", icon: "assets/icons/telegram.png" },
-    { name: "GitHub", url: "https://github.com/javaroot1337", icon: "assets/icons/github.png" },
+    { name: "Discord", url: "https://discord.com/users/javaroot", icon: "assets/icons/discord.webp" },
+    { name: "Telegram", url: "https://t.me/javaroot", icon: "assets/icons/telegram.webp" },
+    { name: "GitHub", url: "https://github.com/javaroot1337", icon: "assets/icons/github.webp" },
+    { name: "Spotify", url: "https://open.spotify.com/", icon: "assets/icons/spotify.webp" },
   ],
   iconSize:         "36px",
   iconBorderRadius: "50%",

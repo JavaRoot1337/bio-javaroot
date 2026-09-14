@@ -29,7 +29,7 @@ py -m http.server 8000
 | `socialLinks` | Ссылки на социальные сети |
 | `cardBackground`, `cardBorderRadius`, `cardTiltIntensity` | Внешний вид и наклон карточки |
 | `particleColor`, `particleCount` | Фоновые частицы |
-| `musicTracks`, `musicVolume` | Плейлист и громкость встроенного плеера |
+| `musicTracks`, `musicVolume` | Плейлист и громкость музыки, управляемой кликами по странице |
 
 ## Структура
 
@@ -45,8 +45,7 @@ assets/           изображения, шрифт и видео
 
 | Файл или папка | Назначение |
 | --- | --- |
-| `avatar.jpg` | Аватар профиля |
-| `discord-avatar.jpg` | Аватар в блоке Discord |
+| `avatar.webp` | Аватар профиля и блока Discord |
 | `background.mp4` | Фоновое видео |
 | `cursor.png` | Пользовательский курсор |
 | `favicon.png` | Иконка вкладки |
