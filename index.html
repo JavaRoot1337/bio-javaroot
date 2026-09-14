@@ -30,6 +30,7 @@
         <source id="bg-video-source" type="video/mp4" />
       </video>
       <canvas id="bg-canvas"></canvas>
+      <audio id="music-audio" preload="metadata"></audio>
 
       <div id="profile-stack">
         <div id="profile-card">
@@ -65,32 +66,6 @@
 
           <div id="social-links"></div>
         </div>
-
-        <section id="music-player" aria-label="Audio player">
-          <audio id="music-audio" preload="metadata"></audio>
-          <div class="music-player-main">
-            <div class="music-player-info">
-              <div class="music-player-meta">
-                <span class="music-player-label" id="music-player-label"></span>
-                <span id="music-track-count">0 / 0</span>
-              </div>
-              <span id="music-title"></span>
-              <span id="music-artist"></span>
-            </div>
-            <div class="music-player-controls">
-              <button id="music-previous" type="button" aria-label="Previous track">&#8249;</button>
-              <button id="music-toggle" type="button" aria-label="Play">&#9654;</button>
-              <button id="music-next" type="button" aria-label="Next track">&#8250;</button>
-            </div>
-          </div>
-          <div class="music-player-timeline">
-            <input id="music-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Playback position" />
-            <div class="music-player-times">
-              <span id="music-current-time">0:00</span>
-              <span id="music-duration">0:00</span>
-            </div>
-          </div>
-        </section>
       </div>
     </div>
 

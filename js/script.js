@@ -189,107 +189,39 @@ function prepareMedia() {
 
 function initMusicPlayer() {
   const audio = document.getElementById("music-audio");
-  const title = document.getElementById("music-title");
-  const artist = document.getElementById("music-artist");
-  const label = document.getElementById("music-player-label");
-  const trackCount = document.getElementById("music-track-count");
-  const toggle = document.getElementById("music-toggle");
-  const previous = document.getElementById("music-previous");
-  const next = document.getElementById("music-next");
-  const progress = document.getElementById("music-progress");
-  const currentTime = document.getElementById("music-current-time");
-  const duration = document.getElementById("music-duration");
   const tracks = Array.isArray(CONFIG.musicTracks)
     ? CONFIG.musicTracks.filter((track) => track && track.file)
     : [];
   let current = 0;
-  const copy = {
-    empty: "\u041d\u0435\u0442 \u0442\u0440\u0435\u043a\u043e\u0432",
-    player: "\u041f\u043b\u0435\u0435\u0440",
-    source: "assets/music",
-    play: "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u043c\u0443\u0437\u044b\u043a\u0443",
-    pause: "\u041f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u043c\u0443\u0437\u044b\u043a\u0443 \u043d\u0430 \u043f\u0430\u0443\u0437\u0443",
-    previous: "\u041f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0438\u0439 \u0442\u0440\u0435\u043a",
-    next: "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u0442\u0440\u0435\u043a",
-    unknown: "\u0411\u0435\u0437 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u044f",
-    unknownArtist: "\u0418\u0441\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c \u043d\u0435 \u0443\u043a\u0430\u0437\u0430\u043d",
-  };
 
   audio.volume = Math.min(Math.max(Number(CONFIG.musicVolume) || 0, 0), 1);
-  label.textContent = copy.player;
-  title.textContent = copy.empty;
-  artist.textContent = copy.source;
-  previous.setAttribute("aria-label", copy.previous);
-  next.setAttribute("aria-label", copy.next);
 
-  const formatTime = (seconds) => {
-    if (!Number.isFinite(seconds)) return "0:00";
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
-    return `${minutes}:${remainingSeconds}`;
-  };
-
-  const setPlayState = (playing) => {
-    toggle.textContent = playing ? "\u23f8" : "\u25b6";
-    toggle.setAttribute("aria-label", playing ? copy.pause : copy.play);
-    toggle.classList.toggle("is-playing", playing);
-  };
-
-  const setTrack = (index, play) => {
+  const setTrack = (index, play = false) => {
     if (!tracks.length) return;
 
     current = (index + tracks.length) % tracks.length;
     const track = tracks[current];
-    title.textContent = track.title || copy.unknown;
-    artist.textContent = track.artist || copy.unknownArtist;
-    trackCount.textContent = `${current + 1} / ${tracks.length}`;
     audio.src = track.file;
     audio.load();
-    progress.value = "0";
-    currentTime.textContent = "0:00";
-    duration.textContent = "0:00";
-    setPlayState(false);
 
     if (play) audio.play().catch(() => {});
   };
 
-  if (!tracks.length) {
-    toggle.disabled = true;
-    previous.disabled = true;
-    next.disabled = true;
-    progress.disabled = true;
-    toggle.setAttribute("aria-label", copy.play);
-    return () => {};
-  }
+  if (!tracks.length) return () => {};
 
   setTrack(0, false);
 
-  toggle.addEventListener("click", () => {
-    if (audio.paused) {
-      audio.play().catch(() => {});
-    } else {
-      audio.pause();
+  document.getElementById("main-content").addEventListener("click", (e) => {
+    if (e.target.closest("a, button, input, select, textarea, [contenteditable='true']")) return;
+
+    if (e.clientY < window.innerHeight / 2) {
+      setTrack(current + (e.clientX < window.innerWidth / 2 ? -1 : 1), true);
+      return;
     }
-  });
 
-  previous.addEventListener("click", () => setTrack(current - 1, !audio.paused));
-  next.addEventListener("click", () => setTrack(current + 1, !audio.paused));
-
-  progress.addEventListener("input", () => {
-    if (!Number.isFinite(audio.duration)) return;
-    audio.currentTime = audio.duration * (Number(progress.value) / 100);
+    audio.pause();
+    audio.currentTime = 0;
   });
-
-  audio.addEventListener("loadedmetadata", () => {
-    duration.textContent = formatTime(audio.duration);
-  });
-  audio.addEventListener("timeupdate", () => {
-    if (!Number.isFinite(audio.duration)) return;
-    progress.value = String((audio.currentTime / audio.duration) * 100);
-    currentTime.textContent = formatTime(audio.currentTime);
-  });
-  audio.addEventListener("play", () => setPlayState(true));
-  audio.addEventListener("pause", () => setPlayState(false));
   audio.addEventListener("ended", () => setTrack(current + 1, true));
 
   return () => {

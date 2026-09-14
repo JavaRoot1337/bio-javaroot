@@ -6,7 +6,7 @@ const CONFIG = {
   nameEffect:    "noise",
   statusText:    "Coding...",
   tabTitle:      "@JavaRoot",
-  entrySymbol:   "в›§",
+  entrySymbol:   "click on me",
 
   avatar:              "assets/avatar.jpg",
   backgroundVideo:     "",
