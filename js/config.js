@@ -46,7 +46,7 @@ const CONFIG = {
     { name: "Discord", url: "https://discord.com/users/javaroot", icon: "assets/icons/discord.webp" },
     { name: "Telegram", url: "https://t.me/javaroot", icon: "assets/icons/telegram.webp" },
     { name: "GitHub", url: "https://github.com/javaroot1337", icon: "assets/icons/github.webp" },
-    { name: "Spotify", url: "https://open.spotify.com/", icon: "assets/icons/spotify.webp" },
+    { name: "Spotify", url: "https://open.spotify.com/user/314pk3c2cjcyn4a5ddhohwc2agku?si=39d68799015d4bd2", icon: "assets/icons/spotify.webp" },
   ],
   iconSize:         "36px",
   iconBorderRadius: "50%",
